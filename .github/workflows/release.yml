@@ -19,9 +19,9 @@ jobs:
         include:
           - target: Linux
             platform: linux
-            format: appimage
+            format: flatpak
             runs-on: ubuntu-24.04
-            artifact-glob: "*.AppImage"
+            artifact-glob: "*.flatpak"
           - target: macOS
             platform: macOS
             format: app
@@ -43,16 +43,16 @@ jobs:
           python-version: "3.12"
           cache: "pip"
 
-      - name: Install Linux system dependencies
+      - name: Install Flatpak tooling (Linux)
         if: matrix.platform == 'linux'
         run: |
           sudo apt-get update
-          sudo apt-get install -y \
-            socat patchelf \
-            libgl1 libegl1 libglib2.0-0t64 \
-            libxkbcommon-x11-0 libxcb-icccm4 libxcb-image0 \
-            libxcb-keysyms1 libxcb-randr0 libxcb-render-util0 \
-            libxcb-shape0 libxcb-xinerama0 libxcb-xinput0 libxcb-cursor0
+          sudo apt-get install -y flatpak flatpak-builder elfutils
+          sudo flatpak remote-add --if-not-exists flathub \
+            https://flathub.org/repo/flathub.flatpakrepo
+          # Pre-install the KDE runtime and SDK so the build is faster.
+          sudo flatpak install -y flathub \
+            org.kde.Platform//6.9 org.kde.Sdk//6.9
 
       - name: Install Briefcase
         run: |
@@ -65,21 +65,21 @@ jobs:
       - name: Lint
         run: ruff check src
 
-      - name: Create
+      - name: Briefcase create
         run: briefcase create ${{ matrix.platform }} ${{ matrix.format }} --no-input --log
 
-      - name: Build
+      - name: Briefcase build
         run: briefcase build ${{ matrix.platform }} ${{ matrix.format }} --no-input --log
 
-      - name: Package (Linux)
+      - name: Briefcase package (Linux)
         if: matrix.platform == 'linux'
-        run: briefcase package linux appimage --no-input --log
+        run: briefcase package linux flatpak --no-input --log
 
-      - name: Package (macOS)
+      - name: Briefcase package (macOS)
         if: matrix.platform == 'macOS'
         run: briefcase package macOS app -p dmg --adhoc-sign --no-input --log
 
-      - name: Package (Windows)
+      - name: Briefcase package (Windows)
         if: matrix.platform == 'windows'
         run: briefcase package windows app -p msi --adhoc-sign --no-input --log
 
@@ -114,7 +114,8 @@ jobs:
           mkdir -p release
           find artifacts -type f \
             \( -name "*.msi" -o -name "*.dmg" -o -name "*.pkg" \
-               -o -name "*.AppImage" -o -name "*.tar.gz" -o -name "*.zip" \) \
+               -o -name "*.flatpak" -o -name "*.deb" -o -name "*.rpm" \
+               -o -name "*.zip" \) \
             -exec cp {} release/ \;
           ls -la release
 

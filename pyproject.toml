@@ -61,9 +61,11 @@ requires = []
 [tool.briefcase.app.video_downloader.windows]
 requires = []
 
-[tool.briefcase.app.video_downloader.linux]
-requires = []
-system_requires = []
+[tool.briefcase.app.video_downloader.linux.flatpak]
+# Use the KDE runtime, which comes with PySide6/Qt6 support.
+flatpak_runtime = "org.kde.Platform"
+flatpak_runtime_version = "6.9"
+flatpak_sdk = "org.kde.Sdk"
 
 [tool.ruff]
 line-length = 100
