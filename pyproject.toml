@@ -40,6 +40,9 @@ url = "https://github.com/Th3-A6add0n/video_downloader"
 author = "Th3 A6add0n"
 author_email = "th3.a6add0n@gmail.com"
 
+[tool.setuptools.package-data]
+"video_downloader.resources" = ["*.png", "*.ico", "*.icns"]
+
 [tool.briefcase.app.video_downloader]
 formal_name = "Video Downloader"
 icon = "src/video_downloader/resources/icon"

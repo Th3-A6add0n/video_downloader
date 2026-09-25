@@ -1,0 +1,11 @@
+Metadata-Version: 2.1
+Briefcase-Version: 0.4.2
+Name: video_downloader
+Formal-Name: Video Downloader
+App-ID: org.videodownloader.video-downloader
+Version: 1.0.0
+Home-page: https://github.com/Th3-A6add0n/video_downloader
+Download-URL: https://github.com/Th3-A6add0n/video_downloader
+Author: Th3 A6add0n
+Author-email: th3.a6add0n@gmail.com
+Summary: Download videos from YouTube and other platforms.

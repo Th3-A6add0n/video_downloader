@@ -39,7 +39,7 @@ Download the installer for your platform from the [Releases page](../../releases
 | -------- | ------ |
 | Windows  | `.msi` (or a wrapped `.exe` installer) |
 | macOS    | `.dmg` containing `.app` |
-| Linux    | `.AppImage` |
+| Linux    | `.flatpak` |
 
 On first launch the app downloads the platform-specific `yt-dlp` and `ffmpeg`
 binaries into your user data directory and verifies them. Nothing is installed
@@ -53,7 +53,7 @@ region-locked videos. The app supports two mechanisms:
 1. **Browser cookies** — the app can read cookies directly from your installed
    browser. Select the browser in **Settings → Cookies**.
 2. **`cookies.txt`** — export cookies from your browser using a
-   [Netscape-format cookie exporter](https://github.com/rotemdan/ExportCookies)
+   [Netscape-format cookie exporter](https://github.com/kairi003/Get-cookies.txt-Locally)
    and import the file via **Settings → Import cookies.txt**.
 
 The `cookies.txt` file is read locally and never uploaded anywhere.
@@ -69,7 +69,7 @@ The `cookies.txt` file is read locally and never uploaded anywhere.
 
 `<user data dir>` is the standard per-OS location:
 
-- Windows: `%LOCALAPPDATA%\VideoDownloader\VideoDownloader`
+- Windows: `%LOCALAPPDATA%\Th3 A6add0n\VideoDownloader`
 - macOS: `~/Library/Application Support/VideoDownloader`
 - Linux: `~/.local/share/VideoDownloader`
 
