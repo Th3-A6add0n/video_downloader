@@ -1,6 +1,6 @@
 [build-system]
-requires = ["briefcase"]
-build-backend = "briefcase"
+requires = ["setuptools>=77", "wheel"]
+build-backend = "setuptools.build_meta"
 
 [project]
 name = "video-downloader"
@@ -8,7 +8,8 @@ version = "1.0.0"
 description = "Cross-platform video downloader powered by yt-dlp and ffmpeg."
 readme = "README.md"
 requires-python = ">=3.12"
-license = { text = "GPL-3.0-or-later" }
+license = "GPL-3.0-or-later"
+license-files = ["LICENSE"]
 authors = [{ name = "Th3 A6add0n", email = "th3.a6add0n@gmail.com" }]
 dependencies = [
     "PySide6>=6.7",
@@ -17,7 +18,6 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = [
-    "briefcase>=0.3.20",
     "pytest>=8.0",
     "ruff>=0.6",
 ]
@@ -25,11 +25,18 @@ dev = [
 [project.scripts]
 video-downloader = "video_downloader.app:main"
 
+[tool.setuptools.packages.find]
+where = ["src"]
+
+# --------------------------------------------------------------------------- #
+# Briefcase configuration
+# --------------------------------------------------------------------------- #
+
 [tool.briefcase]
 project_name = "Video Downloader"
 bundle = "org.videodownloader"
 version = "1.0.0"
-url = "https://github.com/yourname/video-downloader"
+url = "https://github.com/Th3-A6add0n/video_downloader"
 license.file = "LICENSE"
 author = "Th3 A6add0n"
 author_email = "th3.a6add0n@gmail.com"
