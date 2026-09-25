@@ -28,10 +28,13 @@ from PySide6.QtWidgets import (
     QWidget,
 )
 
-from video_downloader.config import Config, load as load_config, save as save_config
+from video_downloader.config import Config
+from video_downloader.config import load as load_config
+from video_downloader.config import save as save_config
 from video_downloader.core.binary_manager import BinaryError, BinaryManager
 from video_downloader.core.downloader import DownloadJob
-from video_downloader.core.hardware import CPU_FALLBACK, detect as detect_hardware
+from video_downloader.core.hardware import CPU_FALLBACK
+from video_downloader.core.hardware import detect as detect_hardware
 from video_downloader.ui.download_item import DownloadItemWidget
 from video_downloader.ui.theme import apply_theme
 
