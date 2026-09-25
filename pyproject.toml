@@ -10,7 +10,7 @@ readme = "README.md"
 requires-python = ">=3.12"
 license = "GPL-3.0-or-later"
 license-files = ["LICENSE"]
-authors = [{ name = "Th3 A6add0n", email = "th3.a6add0n@gmail.com" }]
+authors = [{ name = "Th3-A6add0n", email = "th3.a6add0n@gmail.com" }]
 dependencies = [
     "PySide6>=6.7",
     "platformdirs>=4.2",
@@ -37,7 +37,7 @@ project_name = "Video Downloader"
 bundle = "org.videodownloader"
 version = "1.0.0"
 url = "https://github.com/Th3-A6add0n/video_downloader"
-author = "Th3 A6add0n"
+author = "Th3-A6add0n"
 author_email = "th3.a6add0n@gmail.com"
 
 [tool.setuptools.package-data]

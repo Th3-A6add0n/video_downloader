@@ -7,7 +7,7 @@ from pathlib import Path
 from platformdirs import user_data_dir, user_downloads_dir
 
 APP_NAME = "VideoDownloader"
-APP_AUTHOR = "VideoDownloader"
+APP_AUTHOR = "Th3-A6add0n"
 
 TEMP_PREFIX = "vdl-"
 
