@@ -1,0 +1,67 @@
+[build-system]
+requires = ["briefcase"]
+build-backend = "briefcase"
+
+[project]
+name = "video-downloader"
+version = "1.0.0"
+description = "Cross-platform video downloader powered by yt-dlp and ffmpeg."
+readme = "README.md"
+requires-python = ">=3.12"
+license = { text = "GPL-3.0-or-later" }
+authors = [{ name = "Th3 A6add0n", email = "th3.a6add0n@gmail.com" }]
+dependencies = [
+    "PySide6>=6.7",
+    "platformdirs>=4.2",
+]
+
+[project.optional-dependencies]
+dev = [
+    "briefcase>=0.3.20",
+    "pytest>=8.0",
+    "ruff>=0.6",
+]
+
+[project.scripts]
+video-downloader = "video_downloader.app:main"
+
+[tool.briefcase]
+project_name = "Video Downloader"
+bundle = "org.videodownloader"
+version = "1.0.0"
+url = "https://github.com/yourname/video-downloader"
+license.file = "LICENSE"
+author = "Th3 A6add0n"
+author_email = "th3.a6add0n@gmail.com"
+
+[tool.briefcase.app.video_downloader]
+formal_name = "Video Downloader"
+description = "Download videos from YouTube and other platforms."
+long_description = """
+Download videos from YouTube and other platforms, auto-converted to
+NLE-friendly H.264/AAC using ffmpeg.
+"""
+sources = ["src/video_downloader"]
+requires = [
+    "PySide6>=6.7",
+    "platformdirs>=4.2",
+]
+
+[tool.briefcase.app.video_downloader.macOS]
+universal_build = true
+requires = []
+
+[tool.briefcase.app.video_downloader.windows]
+requires = []
+
+[tool.briefcase.app.video_downloader.linux]
+requires = []
+system_requires = []
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP"]
+ignore = ["E501"]
