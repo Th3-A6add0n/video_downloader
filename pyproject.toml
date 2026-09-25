@@ -37,7 +37,6 @@ project_name = "Video Downloader"
 bundle = "org.videodownloader"
 version = "1.0.0"
 url = "https://github.com/Th3-A6add0n/video_downloader"
-license.file = "LICENSE"
 author = "Th3 A6add0n"
 author_email = "th3.a6add0n@gmail.com"
 
