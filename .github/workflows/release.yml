@@ -5,6 +5,11 @@ on:
     tags:
       - "v*"
   workflow_dispatch:
+    inputs:
+      publish:
+        description: "Publish release immediately (skip draft)"
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -50,7 +55,6 @@ jobs:
           sudo apt-get install -y flatpak flatpak-builder elfutils
           sudo flatpak remote-add --if-not-exists flathub \
             https://flathub.org/repo/flathub.flatpakrepo
-          # Pre-install the KDE runtime and SDK so the build is faster.
           sudo flatpak install -y flathub \
             org.kde.Platform//6.9 org.kde.Sdk//6.9
 
@@ -83,6 +87,11 @@ jobs:
         if: matrix.platform == 'windows'
         run: briefcase package windows app -p msi --adhoc-sign --no-input --log
 
+      - name: List dist contents (debug)
+        run: |
+          echo "Contents of dist/:"
+          ls -la dist/ || echo "dist/ does not exist"
+
       - name: Upload installer
         uses: actions/upload-artifact@v4
         with:
@@ -103,11 +112,18 @@ jobs:
     needs: build
     if: startsWith(github.ref, 'refs/tags/v')
     runs-on: ubuntu-latest
+    permissions:
+      contents: write          # required for softprops/action-gh-release
     steps:
       - name: Download all installers
         uses: actions/download-artifact@v4
         with:
           path: artifacts
+
+      - name: List downloaded artifacts
+        run: |
+          echo "Downloaded artifact tree:"
+          find artifacts -type f -exec ls -la {} \;
 
       - name: Flatten artifact tree
         run: |
@@ -116,14 +132,25 @@ jobs:
             \( -name "*.msi" -o -name "*.dmg" -o -name "*.pkg" \
                -o -name "*.flatpak" -o -name "*.deb" -o -name "*.rpm" \
                -o -name "*.zip" \) \
-            -exec cp {} release/ \;
+            -exec cp -v {} release/ \;
+          echo "Release files:"
           ls -la release
+
+      - name: Verify at least one installer exists
+        run: |
+          count=$(find release -type f | wc -l)
+          if [ "$count" -eq 0 ]; then
+            echo "::error::No installer files found in release/"
+            exit 1
+          fi
+          echo "Found $count installer file(s)."
 
       - name: Create GitHub release
         uses: softprops/action-gh-release@v2
         with:
-          draft: true
+          draft: ${{ github.event_name == 'workflow_dispatch' && inputs.publish == false }}
           generate_release_notes: true
           files: release/*
+          fail_on_unmatched_files: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
