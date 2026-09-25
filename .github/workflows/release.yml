@@ -50,6 +50,7 @@ jobs:
 
       - name: Install Flatpak tooling (Linux)
         if: matrix.platform == 'linux'
+        shell: bash
         run: |
           sudo apt-get update
           sudo apt-get install -y flatpak flatpak-builder elfutils
@@ -59,35 +60,44 @@ jobs:
             org.kde.Platform//6.9 org.kde.Sdk//6.9
 
       - name: Install Briefcase
+        shell: bash
         run: |
           python -m pip install --upgrade pip setuptools wheel
           python -m pip install "briefcase==0.4.4"
 
       - name: Install project (for lint/tests)
+        shell: bash
         run: python -m pip install -e ".[dev]"
 
       - name: Lint
+        shell: bash
         run: ruff check src
 
       - name: Briefcase create
+        shell: bash
         run: briefcase create ${{ matrix.platform }} ${{ matrix.format }} --no-input --log
 
       - name: Briefcase build
+        shell: bash
         run: briefcase build ${{ matrix.platform }} ${{ matrix.format }} --no-input --log
 
       - name: Briefcase package (Linux)
         if: matrix.platform == 'linux'
+        shell: bash
         run: briefcase package linux flatpak --no-input --log
 
       - name: Briefcase package (macOS)
         if: matrix.platform == 'macOS'
+        shell: bash
         run: briefcase package macOS app -p dmg --adhoc-sign --no-input --log
 
       - name: Briefcase package (Windows)
         if: matrix.platform == 'windows'
+        shell: bash
         run: briefcase package windows app -p msi --adhoc-sign --no-input --log
 
       - name: List dist contents (debug)
+        shell: bash
         run: |
           echo "Contents of dist/:"
           ls -la dist/ || echo "dist/ does not exist"
@@ -113,7 +123,7 @@ jobs:
     if: startsWith(github.ref, 'refs/tags/v')
     runs-on: ubuntu-latest
     permissions:
-      contents: write          # required for softprops/action-gh-release
+      contents: write
     steps:
       - name: Download all installers
         uses: actions/download-artifact@v4
@@ -121,11 +131,13 @@ jobs:
           path: artifacts
 
       - name: List downloaded artifacts
+        shell: bash
         run: |
           echo "Downloaded artifact tree:"
           find artifacts -type f -exec ls -la {} \;
 
       - name: Flatten artifact tree
+        shell: bash
         run: |
           mkdir -p release
           find artifacts -type f \
@@ -137,6 +149,7 @@ jobs:
           ls -la release
 
       - name: Verify at least one installer exists
+        shell: bash
         run: |
           count=$(find release -type f | wc -l)
           if [ "$count" -eq 0 ]; then
@@ -148,7 +161,7 @@ jobs:
       - name: Create GitHub release
         uses: softprops/action-gh-release@v2
         with:
-          draft: ${{ github.event_name == 'workflow_dispatch' && inputs.publish == false }}
+          draft: ${{ github.event_name == 'workflow_dispatch' && !inputs.publish }}
           generate_release_notes: true
           files: release/*
           fail_on_unmatched_files: true
