@@ -42,6 +42,7 @@ author_email = "th3.a6add0n@gmail.com"
 
 [tool.briefcase.app.video_downloader]
 formal_name = "Video Downloader"
+icon = "src/video_downloader/resources/icon"
 description = "Download videos from YouTube and other platforms."
 long_description = """
 Download videos from YouTube and other platforms, auto-converted to

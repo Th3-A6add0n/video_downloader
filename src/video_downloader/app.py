@@ -20,6 +20,17 @@ def _setup_logging() -> None:
 
 def main() -> int:
     _setup_logging()
+    log = logging.getLogger(__name__)
+
+    # Clean up any vdl-* temp dirs left behind by previous crashes.
+    try:
+        removed = paths.sweep_orphaned_temp()
+        if removed:
+            log.info("Removed %d orphaned temp director%s.",
+                     removed, "y" if removed == 1 else "ies")
+    except OSError as exc:
+        log.warning("Could not sweep orphaned temp directories: %s", exc)
+
     app = QApplication(sys.argv)
     app.setApplicationName("Video Downloader")
     app.setOrganizationName("VideoDownloader")
