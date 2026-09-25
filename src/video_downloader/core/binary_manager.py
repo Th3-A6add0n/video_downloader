@@ -10,8 +10,8 @@ import tarfile
 import tempfile
 import urllib.request
 import zipfile
+from collections.abc import Callable
 from pathlib import Path
-from typing import Callable
 
 from video_downloader import paths
 from video_downloader.core.sources import (
